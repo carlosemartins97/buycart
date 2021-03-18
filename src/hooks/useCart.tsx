@@ -58,7 +58,6 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
             }
           })
           setCart(updateCart);
-          toast('Produto Adicionado')
         }
         else {
           toast.error('Produto fora de estoque.')
