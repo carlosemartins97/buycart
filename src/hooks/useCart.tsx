@@ -34,21 +34,31 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
   const addProduct = async (productId: number) => {
     try {
-      await api.get('/products')
-        .then(response => {
-          const products: Product[] = []
-          response.data.forEach((product: Product) => {
-            if(product.id === productId ){
-              products.push(product)
+      const productSelected = cart.find(productInCart => productInCart.id === productId);
+      const productInStock = (await api.get(`stock/${productId}`)).data;
+      const productInCart = (await api.get(`/products/${productId}`)).data;
+
+      if(!productSelected){
+          if(productInCart.id === productId ){
+            setCart([...cart, {...productInCart, amount: 1}])
+          }
+      }
+
+      if(productSelected){
+        //checkar se possui stock
+        if(productInStock.amount > productSelected.amount){
+          //encontrar produto
+          let updateCart = cart.map(product => {
+            if(product.id === productId){
+              //setar no carrinho
+              return {...product, amount: Number(product.amount) + 1}
+            } else {
+              return {...product}
             }
           })
-          if(cart.find(products => products.id === productId)){
-          } else {
-            products.forEach((product: Product) => {
-              setCart([...cart, product])
-            })
-          }
-        })
+          setCart(updateCart);
+        }
+      }
 
     } catch {
       // TODO
@@ -88,3 +98,5 @@ export function useCart(): CartContextData {
 
   return context;
 }
+
+
