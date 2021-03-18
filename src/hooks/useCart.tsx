@@ -71,9 +71,13 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
   const removeProduct = (productId: number) => {
     try {
-      
+      //excluir produto do array cart
+      cart.forEach((product, i) => {
+        productId === product.id && cart.splice(i, 1)
+      })
+      setCart([...cart]);
     } catch {
-      // TODO
+      toast.error('Não foi possível excluir o produto.')
     }
   };
 
