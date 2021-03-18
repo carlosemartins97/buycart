@@ -71,7 +71,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
   const removeProduct = (productId: number) => {
     try {
-      // TODO
+      
     } catch {
       // TODO
     }
@@ -82,9 +82,21 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
     amount,
   }: UpdateProductAmount) => {
     try {
-      // TODO
+      const productInStock: Stock = (await api.get(`stock/${productId}`)).data;
+      if(productInStock.amount >= amount){
+        let updateCart = cart.map(product => {
+          if(productId === product.id){
+            return {...product, amount: amount}
+          } else{
+            return {...product}
+          }
+        })
+        setCart(updateCart);
+      } else {
+        toast.error('Produto fora de estoque.');
+      }
     } catch {
-      // TODO
+      toast.error('Não foi possível alterar a quantidade do produto.')
     }
   };
 
