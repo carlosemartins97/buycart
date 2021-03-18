@@ -66,7 +66,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       }
 
     } catch {
-      // TODO
+      toast.error('Não foi possível adicionar o produto. Tenta novamente mais tarde.')
     }
   };
 
