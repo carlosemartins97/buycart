@@ -36,11 +36,13 @@ const Home = (): JSX.Element => {
     }
 
     loadProducts();
-  }, []);
+    console.log(cart)
+  }, [cart]);
 
   function handleAddProduct(id: number) {
-    // TODO
+    addProduct(id);
   }
+
 
   return (
     <ProductList>
